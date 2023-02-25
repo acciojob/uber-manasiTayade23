@@ -1,16 +1,13 @@
 package com.driver.services.impl;
 
-import com.driver.model.TripBooking;
+import com.driver.model.*;
 import com.driver.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.driver.model.Customer;
-import com.driver.model.Driver;
 import com.driver.repository.CustomerRepository;
 import com.driver.repository.DriverRepository;
 import com.driver.repository.TripBookingRepository;
-import com.driver.model.TripStatus;
 
 import java.util.List;
 
@@ -36,6 +33,14 @@ public class CustomerServiceImpl implements CustomerService {
 	public void deleteCustomer(Integer customerId) {
 		// Delete customer without using deleteById function
 		Customer customer=customerRepository2.findById(customerId).get();
+		List<TripBooking> tripBooked=customer.getTripBookingList();
+		for(TripBooking trip:tripBooked){
+			Driver driver=trip.getDriver();
+			driverRepository2.save(driver);
+			Cab cab=driver.getCab();
+			cab.setAvailable(true);
+			trip.setStatus(TripStatus.CANCELED);
+		}
 		customerRepository2.delete(customer);
 	}
 
@@ -53,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
 				}
 			}
 		}
-		if(driver == null) throw new Exception("No Cab Available");
+		if(driver == null) throw new Exception("No cab available!");
 
 		Customer customer=customerRepository2.findById(customerId).get();
 		trip.setDriver(driver);
