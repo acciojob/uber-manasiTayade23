@@ -8,16 +8,16 @@ import javax.persistence.*;
 public class Admin {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int admnNo;
+   private int AdminId;
    private String userName;
    private String password;
 
-   public int getAdmnNo() {
-      return admnNo;
+   public int getAdminId() {
+      return AdminId;
    }
 
-   public void setAdmnNo(int admnNo) {
-      this.admnNo = admnNo;
+   public void setAdminId(int adminId) {
+      this.AdminId = adminId;
    }
 
    public String getUserName() {
@@ -40,7 +40,7 @@ public class Admin {
    }
 
    public Admin(int admnNo, String userName, String password) {
-      this.admnNo = admnNo;
+      this.AdminId = admnNo;
       this.userName = userName;
       this.password = password;
    }
